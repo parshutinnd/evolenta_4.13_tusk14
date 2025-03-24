@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,11 @@ import com.example.demo.dto.Message;
 
 @RestController
 public class MessageController {
-    private final List<Message> messages = new ArrayList<>();
+    private final List<Message> messages = new ArrayList<>(Arrays.asList(
+        new Message(0, "VforVAN", "V"),
+        new Message(1, "Kiss", "Chmok")
+
+    ));
 
     @GetMapping("/message")
     public List<Message> getMessage() {
@@ -44,5 +50,10 @@ public class MessageController {
             }
         }
         return index == -1 ? addMessage(message) : message;
+    }
+
+     @DeleteMapping("/message/{id}")
+    public void deletePerson(@PathVariable int id) {
+        this.messages.remove(getMessagebyId(id).get());
     }
 }
